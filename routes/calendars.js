@@ -4,6 +4,7 @@ const CalendarDAO = require('../daos/calendars');
 
 const router = Router();
 
+// GET ALL
 router.get("/", async (req, res, next) => {
   try {
     const calendars = await CalendarDAO.getAll();
@@ -13,6 +14,7 @@ router.get("/", async (req, res, next) => {
   }
 });
 
+// GET BY ID
 router.get("/:id", async (req, res, next) => {
   try {
     const calendar = await CalendarDAO.getById(req.params.id);
@@ -20,6 +22,41 @@ router.get("/:id", async (req, res, next) => {
       res.json(calendar);
     } else {
       res.sendStatus(404);
+    }
+  } catch(e) {
+    next(e);
+  }
+});
+
+// POST
+router.post("/", async (req, res, next) => {
+  try {
+    const calendar = req.body.name
+    if (!calendar || JSON.stringify(calendar) === '{}' ) {
+      res.sendStatus(400)
+    } else {
+      const savedCalendar = await CalendarDAO.create(calendar)
+      res.json(savedCalendar)
+    }
+  } catch(e) {
+    next(e);
+  }
+});
+
+// PUT
+router.put("/:id", async (req, res, next) => {
+  try {
+    const calendar = req.body
+    if (!calendar || !calendar.name) {
+      res.sendStatus(400);
+    } 
+    else {
+      const updateCalendar = await CalendarDAO.updateById(req.params.id, calendar)
+      if (updateCalendar) {
+        res.json(updateCalendar);
+      } else {
+        res.sendStatus(404);
+      }
     }
   } catch(e) {
     next(e);
