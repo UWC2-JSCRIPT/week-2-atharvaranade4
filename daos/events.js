@@ -10,8 +10,8 @@ module.exports.create = async (name, date, calendarId ) => {
 //GET ALL
 module.exports.getAll = async (calendarId) => {
     try {
-      const calendar = await Events.find({ calendarId: calendarId }).lean();
-      return calendar;
+      const event = await Events.find({ calendarId: calendarId }).lean();
+      return event;
     } catch (e) {
       return null;
     }
@@ -20,8 +20,8 @@ module.exports.getAll = async (calendarId) => {
 //GET BY ID
 module.exports.getById = async (id) => {
     try {
-      const calendar = await Events.find({ _id: id }).lean();
-      return calendar;
+      const event = await Events.findOne({ _id: id }).lean();
+      return event;
     } catch (e) {
       return null;
     }
@@ -30,13 +30,12 @@ module.exports.getById = async (id) => {
 // UPDATE
 module.exports.updateById = async (id, newData) => {
     try {
-      const event = await Events.findOneAndUpdate({ _id: id }, newData, { new: true }).lean();
-      return event;
+        const event = await Events.findOneAndUpdate({ _id: id }, newData, { new: true }).lean();
+        return event;
     } catch (e) {
-      return null;
+        next(e);
     }
-};
-
+}; 
 
 // REMOVE
 module.exports.removeById = async (id) => {
