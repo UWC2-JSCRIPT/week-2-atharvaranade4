@@ -51,9 +51,9 @@ router.put("/:id", async (req, res, next) => {
       res.sendStatus(400);
     } 
     else {
-      const updatedCalendar = await CalendarDAO.updateById(req.params.id, calendar)
-      if (updatedCalendar) {
-        res.json(updatedCalendar);
+      const updateCalendar = await CalendarDAO.updateById(req.params.id, calendar)
+      if (updateCalendar) {
+        res.json(updateCalendar);
       } else {
         res.sendStatus(404);
       }
